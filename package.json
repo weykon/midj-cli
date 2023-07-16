@@ -1,0 +1,26 @@
+{
+  "name": "midj-cli",
+  "version": "1.0.0",
+  "description": "",
+  "bin": {
+    "midj": "./bin/index.ts"
+  },
+  "scripts": {
+    
+  },
+  "author": "weykon <635883092@qq.com>",
+  "license": "ISC",
+  "dependencies": {
+    "boxen": "^7.1.1",
+    "chalk": "^5.3.0",
+    "https-proxy-agent": "^7.0.1",
+    "isomorphic-ws": "^5.0.0",
+    "midjourney": "^4.3.5",
+    "midjourney-api": "^1.0.3",
+    "node-fetch": "^3.3.1",
+    "socks-proxy-agent": "^8.0.1",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+  }
+}
