@@ -1,5 +1,7 @@
-# Introduction
-unofficial node cli for midj work.
+# Introduction   
+![npm](https://img.shields.io/npm/dy/midj-cli)  
+unofficial node cli for midj work.  
+
 
 ## Usage
 ```sh

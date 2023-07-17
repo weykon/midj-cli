@@ -7,7 +7,14 @@
   resolved "https://registry.yarnpkg.com/@huggingface/inference/-/inference-2.6.1.tgz#d11f4c44d824e92577ec460c6ff60474ef36467d"
   integrity sha512-qFYchgOCPeEkZJKiSr7Kz62QwukJtgkeQCT7Q0SSKUcvHpTQVNJp6i/JrJMR4dBdzQysJ1SZDC0pLBBnnskTag==
 
-"@types/node@^20.4.2":
+"@types/blessed@^0.1.22":
+  version "0.1.22"
+  resolved "https://registry.yarnpkg.com/@types/blessed/-/blessed-0.1.22.tgz#1ee4b9a3351c999aade6e005855d3b306a22a0a9"
+  integrity sha512-BsCmBwdn2ELV94FvMXGX1L1UIF/KO7kZvd1PKRbNG9lgiVYoyzcg8Y77S8VeWxX3zS8PUMIdZy1cWpSdvaOx9Q==
+  dependencies:
+    "@types/node" "*"
+
+"@types/node@*", "@types/node@^20.4.2":
   version "20.4.2"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-20.4.2.tgz#129cc9ae69f93824f92fac653eebfb4812ab4af9"
   integrity sha512-Dd0BYtWgnWJKwO1jkmTrzofjK2QXXcai0dmtzvIBhcA+RsG5h8R3xlyta0kGOZRNfL9GuRtb1knmPEhQrePCEw==
@@ -66,6 +73,11 @@ axios@^1.4.0:
     follow-redirects "^1.15.0"
     form-data "^4.0.0"
     proxy-from-env "^1.1.0"
+
+blessed@^0.1.81:
+  version "0.1.81"
+  resolved "https://registry.yarnpkg.com/blessed/-/blessed-0.1.81.tgz#f962d687ec2c369570ae71af843256e6d0ca1129"
+  integrity sha512-LoF5gae+hlmfORcG1M5+5XZi4LBmvlXTzwJWzUlPryN/SJdSflZvROM2TwkT0GMpq7oqT48NRd4GS7BiVBc5OQ==
 
 boxen@^7.1.1:
   version "7.1.1"
