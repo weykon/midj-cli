@@ -5,9 +5,7 @@
   "bin": {
     "midj": "./bin/index.ts"
   },
-  "scripts": {
-    
-  },
+  "scripts": {},
   "author": "weykon <635883092@qq.com>",
   "license": "ISC",
   "dependencies": {
@@ -22,5 +20,6 @@
     "yargs": "^17.7.2"
   },
   "devDependencies": {
+    "@types/node": "^20.4.2"
   }
 }

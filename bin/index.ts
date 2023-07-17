@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
+import yargs from 'yargs';
 import chalk from 'chalk';
 import boxen from 'boxen';
-import yargs from 'yargs';
 import readline from 'readline';
 import { Midjourney } from 'midjourney';
 import { readFileSync } from 'fs';
@@ -17,7 +17,7 @@ const boxenOptions = {
     margin: 1,
     borderStyle: "round",
     borderColor: "green",
-    backgroundColor: "#555555"
+    backgroundColor: "#555555",
 };
 
 const msgBox = boxen(greeting, boxenOptions);
@@ -47,6 +47,7 @@ const midj = new Midjourney({
     Debug: true,
     fetch: fetch,
     Ws: true,
+    // Limit: 4
 });
 
 const rl = readline.createInterface({
@@ -73,26 +74,27 @@ async function askWhatToDo() {
 async function imagine() {
     console.log("正在生成...")
     const ansPrompt = await createQ("输入你的prompt: ") as string;
-    let ansNum = await createQ("你想要几组4x4的？ (int, number): ") as number;
+    let ansNum = Number(await createQ("你想要几组4x4的？ (int, number): ") as string);
     if (ansNum > 4) {
         console.log("对不起，最多只能生成4组4x4的");
         ansNum = 4
     }
-
-    const can_next = 'INTERACTION_SUCCESS';
-    
     const promise_list = new Array(ansNum).fill(
-        midj.Imagine(ansPrompt, (uri, progress) => {
-            console.log(`[${progress}] ${uri}`);
-        })
+        midj.Imagine.bind(midj)
     )
+    console.log(promise_list)
 
-    for (let i of promise_list) {
-        await i;
+
+    for (const i of promise_list) {
         console.log(`正在发起一次请求`);
+        i(
+            ansPrompt, (uri, progress) => {
+                console.log(`[${progress}] ${uri}`);
+            });
         await new Promise(resolve => setTimeout(resolve, 3000));
         console.log(`3 秒`);
     }
+
 }
 
 try {
