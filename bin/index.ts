@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 import yargs from 'yargs';
 import chalk from 'chalk';
-import boxen from 'boxen';
+import boxen, { Options } from 'boxen';
 import readline from 'readline';
 import { Midjourney } from 'midjourney';
 import { readFileSync } from 'fs';
@@ -20,7 +20,7 @@ const boxenOptions = {
     backgroundColor: "#555555",
 };
 
-const msgBox = boxen(greeting, boxenOptions);
+const msgBox = boxen(greeting, boxenOptions as Options);
 console.log(msgBox);
 
 const options = yargs(hideBin(process.argv)).argv
@@ -44,8 +44,8 @@ const midj = new Midjourney({
     ServerId: serverStr,
     ChannelId: channelStr,
     SalaiToken: config.token,
-    Debug: true,
-    fetch: fetch,
+    Debug: false,
+    fetch: fetch as any,
     Ws: true,
     // Limit: 4
 });
@@ -66,9 +66,11 @@ function createQ(q) {
 
 
 async function askWhatToDo() {
-    const ans = await createQ("你想要做什么？ (imagine): ");
-    if (ans === "imagine") {
+    const ans = await createQ("你想要做什么？ (imagine - (i) ): ");
+    if (ans === "imagine" || ans === "i") {
         imagine();
+    }else{
+        chalk.red("对不起，我不知道你想要做什么, 目前只有imagine (i)");
     }
 }
 async function imagine() {
@@ -82,19 +84,33 @@ async function imagine() {
     const promise_list = new Array(ansNum).fill(
         midj.Imagine.bind(midj)
     )
-    console.log(promise_list)
+
+    // 如果打开了midj-api的ws，是await waitImageMessage 或 await WaitMessage
 
 
-    for (const i of promise_list) {
-        console.log(`正在发起一次请求`);
-        i(
-            ansPrompt, (uri, progress) => {
-                console.log(`[${progress}] ${uri}`);
-            });
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        console.log(`3 秒`);
-    }
+    let waitFinish: any = [];
+    const sendReq = new Promise(async (suc, fail) => {
+        for await (const i of promise_list) {
+            console.log(`正在发起一次请求`);
+            waitFinish.push(
+                i(
+                    ansPrompt, (uri, progress) => {
+                        console.log(`[${progress}] ${uri}`);
+                    }
+                )
+            )
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            console.log(`3 秒`);
+        }
+        suc(true);
+    })
 
+    await Promise.all([
+        sendReq, waitFinish
+    ]);
+
+    console.log("完成！")
+    await askWhatToDo();
 }
 
 try {
@@ -106,5 +122,6 @@ try {
     })()
 } catch (error) {
     console.log('错误', error);
+    askWhatToDo();
 }
 
