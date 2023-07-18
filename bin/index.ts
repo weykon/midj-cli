@@ -7,6 +7,7 @@ import { Midjourney } from "midjourney";
 import { readFileSync } from "fs";
 import { hideBin } from "yargs/helpers";
 import fetch from "node-fetch";
+import { initPort, getFetch, ProxyWebSocket } from "./net";
 
 console.log("node version", process.version);
 namespace Back {
@@ -23,7 +24,7 @@ namespace Back {
   const msgBox = boxen(greeting, boxenOptions as Options);
   console.log(msgBox);
 
-  const options = yargs(hideBin(process.argv)).argv;
+  const options = (yargs(hideBin(process.argv)) as any).argv;
 
   if (!options.load) {
     // sorry
@@ -34,6 +35,17 @@ namespace Back {
     );
     process.exit(1);
   }
+  if (!options.port) {
+    // sorry
+    console.log(
+      chalk.red(
+        "对不起，您需要指定要使用的端口，类似: npx midj --port 7890",
+      ),
+    );
+    process.exit(1);
+  }
+
+  initPort(Number(options.port));
 
   console.log(chalk.green(`正在加载 ${options.load}...`));
   const file = readFileSync(options.load, "utf8");
@@ -49,8 +61,9 @@ namespace Back {
     ChannelId: channelStr,
     SalaiToken: config.token,
     Debug: false,
-    fetch: fetch as any,
     Ws: true,
+    fetch: getFetch() as any,
+    WebSocket: ProxyWebSocket as any,
     // Limit: 4
   });
 

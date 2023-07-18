@@ -68,6 +68,8 @@ namespace View {
       style: {
         bg: "grey",
       },
+      inputOnFocus: true,
+      vi: true,
     });
     const login_box_login_button = blessed.button({
       "parent": login_box,
@@ -81,6 +83,29 @@ namespace View {
       "content": "login",
       "style": {},
     });
+
+    const proxy_box = blessed.textbox({
+      parent: login_box,
+      mouse: true,
+      keys: true,
+      top: 8,
+      left: 9,
+      right: 2,
+      shrink: true,
+      name: "input",
+      bg: "grey",
+    });
+    const login_box_port_input_title = blessed.text({
+      parent: proxy_box,
+      valign: "middle",
+      left: -5,
+      "content": "token",
+      shrink: true,
+      name: "port",
+      inputOnFocus: true,
+      vi: true,
+    });
+
     screen.append(login_box);
     screen.key(["escape", "q", "C-c"], function (ch, key) {
       return process.exit(0);
@@ -97,10 +122,9 @@ namespace View {
       width: "20%",
       height: "100%",
       bg: "green",
-
     });
   }
-  login_pannel()
-//   main_pannel();
+  login_pannel();
+  //   main_pannel();
   screen.render();
 }
