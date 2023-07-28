@@ -8,6 +8,7 @@ import { readFileSync } from "fs";
 import { hideBin } from "yargs/helpers";
 import fetch from "node-fetch";
 import { initPort, getFetch, ProxyWebSocket } from "./net";
+import { AI, one_ask } from "ai-say";
 
 console.log("node version", process.version);
 namespace Back {
@@ -53,6 +54,12 @@ namespace Back {
   const config = JSON.parse(file);
   const serverStr = config.channel.split("/").slice(-2)[0];
   const channelStr = config.channel.split("/").slice(-2)[1];
+  const apikey = config.apikey;
+  const ai = new AI()
+  ai.config({
+    apiKey: apikey,
+    organization: "org-eXVaEz6wW2SqzHP7fj0RHBMq"
+  });
 
   console.log(chalk.green(`正在连接到 ${serverStr} 的 ${channelStr} 频道...`));
 
@@ -117,8 +124,8 @@ namespace Back {
             },
           ),
         );
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        console.log(`3 秒`);
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+        console.log(`5 秒`);
       }
       suc(true);
     });
